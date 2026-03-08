@@ -1,0 +1,38 @@
+plugins {
+    id 'fabric-loom' version '1.1-SNAPSHOT'
+    id 'maven-publish'
+}
+
+group = 'com.rjwebb134'
+version = '1.0.0'
+archivesBaseName = 'aiterror'
+
+minecraft {
+    version = "1.20.1"
+    mappings channel: "official", version: "1.20.1"
+    loader version: "0.14.8"
+}
+
+repositories {
+    mavenCentral()
+    maven { url = "https://maven.fabricmc.net/" }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:1.20.1"
+    mappings "net.fabricmc:yarn:1.20.1+build.8:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.14.8"
+    // Add your AI libraries here, for example TensorFlow or a custom model
+    implementation "org.tensorflow:tensorflow-core-platform:0.5.0"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}

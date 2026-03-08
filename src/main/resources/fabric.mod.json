@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "aiterror",
+  "version": "1.0.0",
+  "name": "AI Terror",
+  "description": "A mod where AI analyzes the world and terrorizes players.",
+  "authors": ["rjwebb134-dev"],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+  "license": "MIT",
+  "environment": "*",
+  "icon": "assets/aiterror/icon.png",
+  "entrypoints": {
+    "main": [
+      "com.rjwebb134.aiterror.MainMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.8"
+  }
+}
