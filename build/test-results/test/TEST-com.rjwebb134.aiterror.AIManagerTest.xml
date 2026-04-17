@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.rjwebb134.aiterror.AIManagerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-04-17T23:15:54.964Z" hostname="codespaces-78c940" time="0.88">
+  <properties/>
+  <testcase name="analyzeDeepCaveReturnsZombieSpawn()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.872"/>
+  <testcase name="analyzeLowHealthReturnsWarning()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.003"/>
+  <testcase name="analyzeHighHealthAboveGroundReturnsWarning()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.003"/>
+  <system-out><![CDATA[[23:15:55] [Test worker/INFO]: AI manager initialized
+[23:15:55] [Test worker/INFO]: AI manager initialized
+[23:15:55] [Test worker/INFO]: AI manager initialized
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
