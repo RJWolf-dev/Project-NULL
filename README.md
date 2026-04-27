@@ -37,12 +37,3 @@ Project-NULL/
     ├── fabric.mod.json   # Fabric metadata
     └── assets/aiterror   # placeholder for textures/models
 ```
-
-## Next Steps
-
-* Hook `AIManager` into game events (ticks, player moves, mob spawns).
-* Integrate a machine learning library (TensorFlow, PyTorch via JNI, etc.).
-* Create neural nets/behaviors that observe the world and choose terrifying actions.
-* Allow the AI to manipulate blocks, spawn creatures, send chat messages, or affect player status.
-
-Happy modding! 🎮
