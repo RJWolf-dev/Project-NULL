@@ -28,13 +28,13 @@ public class AIManagerTest {
     }
 
     @Test
-    void analyzeHighHealthAboveGroundReturnsWarning() {
+    void analyzeHighHealthOnGroundReturnsCobweb() {
         AIManager aiManager = new AIManager();
         aiManager.initialize();
 
         AIState safeState = new AIState(80.0, 18.0f, true);
         AIPlan plan = aiManager.analyze(safeState);
 
-        assertEquals(AIPlan.SEND_WARNING, plan);
+        assertEquals(AIPlan.PLACE_COBWEB, plan);
     }
 }

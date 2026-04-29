@@ -1,8 +1,13 @@
 package com.rjwebb134.aiterror;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,12 +38,16 @@ public class AIManager {
             return AIPlan.NO_ACTION;
         }
 
+        if (state.getPlayerY() < 40) {
+            return AIPlan.SPAWN_ZOMBIE;
+        }
+
         if (state.getPlayerHealth() < 10.0f) {
             return AIPlan.SEND_WARNING;
         }
 
-        if (state.getPlayerY() < 40) {
-            return AIPlan.SPAWN_ZOMBIE;
+        if (state.isOnGround()) {
+            return AIPlan.PLACE_COBWEB;
         }
 
         return AIPlan.SEND_WARNING;
@@ -50,14 +59,33 @@ public class AIManager {
             return;
         }
 
+        if (world.isClient) return;
+        ServerWorld serverWorld = (ServerWorld) world;
+        BlockPos pos = player.getBlockPos();
+
         switch (currentPlan) {
             case SPAWN_ZOMBIE -> {
                 player.sendMessage(Text.literal("An AI terror lurks nearby..."), false);
+                // Spawn a zombie near the player
+                EntityType.ZOMBIE.spawn(serverWorld, pos.add(3, 0, 3), SpawnReason.EVENT);
                 LOGGER.info("Executed SPAWN_ZOMBIE interaction");
             }
             case SEND_WARNING -> {
                 player.sendMessage(Text.literal("The AI has analyzed your world and is watching."), false);
                 LOGGER.info("Executed SEND_WARNING interaction");
+            }
+            case PLACE_COBWEB -> {
+                player.sendMessage(Text.literal("The world feels heavy..."), false);
+                // Place cobwebs in a cross pattern around the player
+                BlockPos[] offsets = {
+                    pos.north(), pos.south(), pos.east(), pos.west()
+                };
+                for (BlockPos p : offsets) {
+                    if (serverWorld.getBlockState(p).isAir()) {
+                        serverWorld.setBlockState(p, Blocks.COBWEB.getDefaultState());
+                    }
+                }
+                LOGGER.info("Executed PLACE_COBWEB interaction");
             }
             case NO_ACTION, UNSET -> {
                 LOGGER.info("No AI action taken");
