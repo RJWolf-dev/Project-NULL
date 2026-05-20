@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.rjwebb134.aiterror.AIManagerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-04-17T23:15:54.964Z" hostname="codespaces-78c940" time="0.88">
+<testsuite name="com.rjwebb134.aiterror.AIManagerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-05-20T22:37:25.400Z" hostname="codespaces-78c940" time="1.227">
   <properties/>
-  <testcase name="analyzeDeepCaveReturnsZombieSpawn()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.872"/>
-  <testcase name="analyzeLowHealthReturnsWarning()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.003"/>
-  <testcase name="analyzeHighHealthAboveGroundReturnsWarning()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.003"/>
-  <system-out><![CDATA[[23:15:55] [Test worker/INFO]: AI manager initialized
-[23:15:55] [Test worker/INFO]: AI manager initialized
-[23:15:55] [Test worker/INFO]: AI manager initialized
+  <testcase name="analyzeHighHealthOnGroundReturnsCobweb()" classname="com.rjwebb134.aiterror.AIManagerTest" time="1.184"/>
+  <testcase name="analyzeDeepCaveReturnsZombieSpawn()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.006"/>
+  <testcase name="analyzeMultipleConditionsFollowsPriority()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.011"/>
+  <testcase name="analyzeBoundaryConditionHealthEqualsThreshold()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.001"/>
+  <testcase name="analyzeNullStateReturnsNoAction()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.006"/>
+  <testcase name="analyzeLowHealthReturnsWarning()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.002"/>
+  <testcase name="analyzeBoundaryConditionYEqualsThreshold()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.003"/>
+  <testcase name="initializeResetsState()" classname="com.rjwebb134.aiterror.AIManagerTest" time="0.001"/>
+  <system-out><![CDATA[[22:37:26] [Test worker/INFO]: AI manager initialized
+[22:37:26] [Test worker/INFO]: AI manager initialized
+[22:37:26] [Test worker/INFO]: AI manager initialized
+[22:37:26] [Test worker/INFO]: AI manager initialized
+[22:37:26] [Test worker/INFO]: AI manager initialized
+[22:37:26] [Test worker/INFO]: AI manager initialized
+[22:37:26] [Test worker/INFO]: AI manager initialized
+[22:37:26] [Test worker/INFO]: AI manager initialized
+[22:37:26] [Test worker/INFO]: AI manager initialized
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

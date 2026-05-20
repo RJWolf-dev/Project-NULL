@@ -69,8 +69,8 @@ public class AIManager {
         switch (currentPlan) {
             case SPAWN_ZOMBIE -> {
                 player.sendMessage(Text.literal("An AI terror lurks nearby..."), false);
-                // Spawn a zombie near the player using the 1.20.1 compatible helper
-                EntityType.ZOMBIE.spawn(serverWorld, null, null, null, pos.add(3, 0, 3), SpawnReason.EVENT, true, false);
+                // Spawn a zombie near the player using the 1.20.1 compatible method
+                EntityType.ZOMBIE.spawn(serverWorld, pos.add(3, 0, 3), SpawnReason.EVENT);
                 LOGGER.info("Executed SPAWN_ZOMBIE interaction");
             }
             case SEND_WARNING -> {
