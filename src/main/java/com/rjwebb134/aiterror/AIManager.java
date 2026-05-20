@@ -28,11 +28,13 @@ public class AIManager {
         }
 
         AIState state = new AIState(player.getY(), player.getHealth(), player.isOnGround());
-        currentPlan = analyze(state);
+        // Phase 1 & 2: Analyze state and Formulate a plan
+        this.currentPlan = analyze(state);
         LOGGER.info("AI selected plan {} for player at y={} health={}", currentPlan, state.getPlayerY(), state.getPlayerHealth());
         return currentPlan;
     }
 
+    // Decision logic to determine the best way to "terrorize" the player
     public AIPlan analyze(AIState state) {
         if (state == null) {
             return AIPlan.NO_ACTION;
@@ -63,11 +65,12 @@ public class AIManager {
         ServerWorld serverWorld = (ServerWorld) world;
         BlockPos pos = player.getBlockPos();
 
+        // Phase 3: Execute the formulated plan
         switch (currentPlan) {
             case SPAWN_ZOMBIE -> {
                 player.sendMessage(Text.literal("An AI terror lurks nearby..."), false);
-                // Spawn a zombie near the player
-                EntityType.ZOMBIE.spawn(serverWorld, pos.add(3, 0, 3), SpawnReason.EVENT);
+                // Spawn a zombie near the player using the 1.20.1 compatible helper
+                EntityType.ZOMBIE.spawn(serverWorld, null, null, null, pos.add(3, 0, 3), SpawnReason.EVENT, true, false);
                 LOGGER.info("Executed SPAWN_ZOMBIE interaction");
             }
             case SEND_WARNING -> {
@@ -91,6 +94,9 @@ public class AIManager {
                 LOGGER.info("No AI action taken");
             }
         }
+
+        // Reset the plan after execution to avoid unintended repetition
+        this.currentPlan = AIPlan.NO_ACTION;
     }
 
     public AIPlan getCurrentPlan() {
