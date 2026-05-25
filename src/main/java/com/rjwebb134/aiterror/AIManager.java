@@ -10,13 +10,16 @@ import net.minecraft.world.World;
 import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class AIManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AIManager.class);
-    private AIPlan currentPlan = AIPlan.NO_ACTION;
+    private final Map<UUID, AIPlan> playerPlans = new HashMap<>();
 
     public void initialize() {
-        currentPlan = AIPlan.NO_ACTION;
+        playerPlans.clear();
         LOGGER.info("AI manager initialized");
     }
 
@@ -29,8 +32,9 @@ public class AIManager {
 
         AIState state = new AIState(player.getY(), player.getHealth(), player.isOnGround());
         // Phase 1 & 2: Analyze state and Formulate a plan
-        this.currentPlan = analyze(state);
-        LOGGER.info("AI selected plan {} for player at y={} health={}", currentPlan, state.getPlayerY(), state.getPlayerHealth());
+        AIPlan plan = analyze(state);
+        playerPlans.put(player.getUuid(), plan);
+        LOGGER.info("AI selected plan {} for player {} at y={} health={}", plan, player.getName().getString(), state.getPlayerY(), state.getPlayerHealth());
         return currentPlan;
     }
 
@@ -64,6 +68,7 @@ public class AIManager {
         if (world.isClient) return;
         ServerWorld serverWorld = (ServerWorld) world;
         BlockPos pos = player.getBlockPos();
+        AIPlan currentPlan = playerPlans.getOrDefault(player.getUuid(), AIPlan.NO_ACTION);
 
         // Phase 3: Execute the formulated plan
         switch (currentPlan) {
@@ -96,10 +101,10 @@ public class AIManager {
         }
 
         // Reset the plan after execution to avoid unintended repetition
-        this.currentPlan = AIPlan.NO_ACTION;
+        playerPlans.remove(player.getUuid());
     }
 
-    public AIPlan getCurrentPlan() {
-        return currentPlan;
+    public AIPlan getCurrentPlan(PlayerEntity player) {
+        return playerPlans.getOrDefault(player.getUuid(), AIPlan.NO_ACTION);
     }
 }
