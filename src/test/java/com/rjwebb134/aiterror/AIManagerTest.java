@@ -40,6 +40,17 @@ public class AIManagerTest {
     }
 
     @Test
+    void analyzeSprintingPlayerReturnsCobweb() {
+        AIManager aiManager = new AIManager();
+        aiManager.initialize();
+
+        AIState sprintingState = new AIState(80.0, 18.0f, true, true, false, false, false, 2);
+        AIPlan plan = aiManager.analyze(sprintingState);
+
+        assertEquals(AIPlan.PLACE_COBWEB, plan);
+    }
+
+    @Test
     void analyzeNullStateReturnsNoAction() {
         AIManager aiManager = new AIManager();
         aiManager.initialize();

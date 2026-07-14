@@ -38,9 +38,9 @@
         const tabContainers = getTabContainers();
         for (let i = 0; i < tabContainers.length; i++) {
             const spans = tabContainers[i].getElementsByTagName("span");
-            for (let j = 0; j < spans.length; ++j) {
-                if (spans[j].className.indexOf("code") >= 0) {
-                    codeBlocks.push(spans[j]);
+            for (let i = 0; i < spans.length; ++i) {
+                if (spans[i].className.indexOf("code") >= 0) {
+                    codeBlocks.push(spans[i]);
                 }
             }
         }
