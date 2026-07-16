@@ -2,6 +2,8 @@ package com.rjwebb134.aiterror;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -111,5 +113,31 @@ public class AIManagerTest {
         aiManager.initialize();
 
         assertEquals(AIPlan.NO_ACTION, aiManager.analyze((AIState) null));
+    }
+
+    @Test
+    void successfulAudioScareMakesZombiePlanMoreLikely() {
+        AIManager aiManager = new AIManager();
+        aiManager.initialize();
+
+        UUID playerId = UUID.randomUUID();
+        aiManager.rememberAudioObservation(playerId, 0.82D, "I heard a zombie behind me");
+
+        AIPlan plan = aiManager.analyze(new AIState(80.0, 18.0f, true), playerId);
+
+        assertEquals(AIPlan.SPAWN_ZOMBIE, plan);
+    }
+
+    @Test
+    void speechMemoryInfluencesTheNextDecision() {
+        AIManager aiManager = new AIManager();
+        aiManager.initialize();
+
+        UUID playerId = UUID.randomUUID();
+        aiManager.rememberSpeech(playerId, "The cave is too dark and I am scared");
+
+        AIPlan plan = aiManager.analyze(new AIState(80.0, 18.0f, true), playerId);
+
+        assertEquals(AIPlan.PLACE_COBWEB, plan);
     }
 }

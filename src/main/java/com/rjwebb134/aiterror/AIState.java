@@ -9,13 +9,23 @@ public final class AIState {
     private final boolean jumping;
     private final boolean lookingAtAi;
     private final int consecutiveActionCount;
+    private final double audioScareScore;
+    private final double speechInsightScore;
+    private final String spokenObservation;
 
     public AIState(double playerY, float playerHealth, boolean onGround) {
-        this(playerY, playerHealth, onGround, false, false, false, false, 0);
+        this(playerY, playerHealth, onGround, false, false, false, false, 0, 0.0D, 0.0D, "");
     }
 
     public AIState(double playerY, float playerHealth, boolean onGround, boolean sprinting, boolean moving,
                    boolean jumping, boolean lookingAtAi, int consecutiveActionCount) {
+        this(playerY, playerHealth, onGround, sprinting, moving, jumping, lookingAtAi, consecutiveActionCount,
+                0.0D, 0.0D, "");
+    }
+
+    public AIState(double playerY, float playerHealth, boolean onGround, boolean sprinting, boolean moving,
+                   boolean jumping, boolean lookingAtAi, int consecutiveActionCount, double audioScareScore,
+                   double speechInsightScore, String spokenObservation) {
         this.playerY = playerY;
         this.playerHealth = playerHealth;
         this.onGround = onGround;
@@ -24,6 +34,9 @@ public final class AIState {
         this.jumping = jumping;
         this.lookingAtAi = lookingAtAi;
         this.consecutiveActionCount = consecutiveActionCount;
+        this.audioScareScore = audioScareScore;
+        this.speechInsightScore = speechInsightScore;
+        this.spokenObservation = spokenObservation == null ? "" : spokenObservation;
     }
 
     public double getPlayerY() {
@@ -56,5 +69,17 @@ public final class AIState {
 
     public int getConsecutiveActionCount() {
         return consecutiveActionCount;
+    }
+
+    public double getAudioScareScore() {
+        return audioScareScore;
+    }
+
+    public double getSpeechInsightScore() {
+        return speechInsightScore;
+    }
+
+    public String getSpokenObservation() {
+        return spokenObservation;
     }
 }
