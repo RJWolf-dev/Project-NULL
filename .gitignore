@@ -1,0 +1,53 @@
+
+# Firestore credentials - NEVER commit this!
+firebase-adminsdk.json
+
+# Build files
+build/
+dist/
+target/
+*.class
+*.jar
+*.war
+
+# Gradle
+.gradle/
+gradle-app.setting
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.iml
+.classpath
+.project
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Environment
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Run files
+run/
+
+# Java
+*.class
+**/target/
+.classpath
+
+# Minecraft development
+out/
+remappedSrc/
