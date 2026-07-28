@@ -1,11 +1,18 @@
 package com.rjwebb134.aiterror.data;
 
 import com.google.api.core.ApiFuture;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.*;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -15,11 +22,21 @@ import java.util.concurrent.ExecutionException;
 public class FirestoreManager {
     private static Firestore db;
     private static final String COLLECTION_NAME = "player_learning_data";
+    private static final String SERVICE_ACCOUNT_PROPERTY = "aiterror.firebase.credentials";
+    private static final String SERVICE_ACCOUNT_ENV = "FIREBASE_SERVICE_ACCOUNT_PATH";
+    private static final String GOOGLE_APPLICATION_CREDENTIALS_ENV = "GOOGLE_APPLICATION_CREDENTIALS";
     private static boolean initialized = false;
     
     /**
-     * Initialize Firebase Admin SDK and Firestore connection
-     * Must be called once during server startup
+     * Initialize Firebase Admin SDK and Firestore connection.
+     *
+     * <p>Credentials are resolved in this order:</p>
+     * <ol>
+     *     <li>JVM property {@code -Daiterror.firebase.credentials=/path/to/service-account.json}</li>
+     *     <li>Environment variable {@code FIREBASE_SERVICE_ACCOUNT_PATH}</li>
+     *     <li>Environment variable {@code GOOGLE_APPLICATION_CREDENTIALS}</li>
+     *     <li>Google Application Default Credentials</li>
+     * </ol>
      */
     public static void initialize() {
         try {
@@ -29,7 +46,7 @@ public class FirestoreManager {
             }
             
             if (FirebaseApp.getApps().isEmpty()) {
-                FirebaseApp.initializeApp();
+                FirebaseApp.initializeApp(buildFirebaseOptions());
             }
             
             db = FirestoreClient.getFirestore();
@@ -39,9 +56,46 @@ public class FirestoreManager {
             
         } catch (Exception e) {
             System.err.println("[AI Terror Mod] ✗ Failed to initialize Firestore: " + e.getMessage());
-            System.err.println("[AI Terror Mod] Make sure firebase-adminsdk.json is in project root");
+            System.err.println("[AI Terror Mod] Configure credentials with -D" + SERVICE_ACCOUNT_PROPERTY
+                    + "=/path/to/service-account.json, " + SERVICE_ACCOUNT_ENV + ", or "
+                    + GOOGLE_APPLICATION_CREDENTIALS_ENV + ".");
             e.printStackTrace();
         }
+    }
+
+    private static FirebaseOptions buildFirebaseOptions() throws IOException {
+        String credentialsPath = firstNonBlank(
+                System.getProperty(SERVICE_ACCOUNT_PROPERTY),
+                System.getenv(SERVICE_ACCOUNT_ENV),
+                System.getenv(GOOGLE_APPLICATION_CREDENTIALS_ENV)
+        );
+
+        GoogleCredentials credentials;
+        if (credentialsPath != null) {
+            Path path = Path.of(credentialsPath);
+            if (!Files.isRegularFile(path)) {
+                throw new IOException("Firebase service account file does not exist: " + path.toAbsolutePath());
+            }
+
+            try (InputStream serviceAccount = new FileInputStream(path.toFile())) {
+                credentials = GoogleCredentials.fromStream(serviceAccount);
+            }
+        } else {
+            credentials = GoogleCredentials.getApplicationDefault();
+        }
+
+        return FirebaseOptions.builder()
+                .setCredentials(credentials)
+                .build();
+    }
+
+    private static String firstNonBlank(String... values) {
+        for (String value : values) {
+            if (value != null && !value.isBlank()) {
+                return value;
+            }
+        }
+        return null;
     }
     
     /**
@@ -107,7 +161,7 @@ public class FirestoreManager {
      * Get existing player data or create new profile if doesn't exist
      * This is the primary method for getting player data
      */
-    public static PlayerLearningData getOrCreatePlayerData(ServerPlayerEntity player) {
+    public static PlayerLearningData getOrCreatePlayerData(PlayerEntity player) {
         if (!isInitialized()) {
             System.err.println("[AI Terror Mod] ✗ Firestore not initialized! Cannot get/create player data");
             return null;
