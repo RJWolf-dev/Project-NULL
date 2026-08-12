@@ -30,4 +30,4 @@ jobs:
         with: 
           # I grabbed your specific Project ID from your CurseForge tab!
           curseforge-id: '1443384' 
-          curseforge-token: ${{ 1996e57e-e4eb-4681-bfa3-eff58853e896 }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
