@@ -1,8 +1,10 @@
 name: Publish to CurseForge
 
-# This triggers the workflow on every push to any branch
+# This triggers the workflow only when you push a version tag (e.g., v1.0.0)
 on:
   push:
+    tags:
+      - 'v*'
 
 jobs:
   build-and-publish:
