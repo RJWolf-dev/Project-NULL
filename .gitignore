@@ -7,12 +7,12 @@ build/
 dist/
 target/
 *.class
-*.jar
 *.war
 
 # Gradle
 .gradle/
 gradle-app.setting
+!gradle-wrapper.jar
 
 # IDE
 .idea/
