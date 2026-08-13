@@ -47,6 +47,9 @@ run/
 *.class
 **/target/
 .classpath
+*.hprof
+*.pem
+*.keystore
 
 # Minecraft development
 out/
