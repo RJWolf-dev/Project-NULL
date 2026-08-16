@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Check for updates to Gradle dependencies
+  - package-ecosystem: "gradle"
+    directory: "/" # Assuming your build.gradle is in the root directory
+    schedule:
+      interval: "weekly"
+
+  # Check for updates to GitHub Actions used in your workflows
+  - package-ecosystem: "github-actions"
+    directory: "/" 
+    schedule:
+      interval: "weekly"
