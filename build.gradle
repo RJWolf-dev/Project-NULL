@@ -41,8 +41,8 @@ dependencies {
     implementation platform("com.google.cloud:libraries-bom:26.85.1")
     implementation("com.google.cloud:google-cloud-firestore")
     include("com.google.cloud:google-cloud-firestore")
-    implementation("com.google.firebase:firebase-admin:9.2.0")
-    include("com.google.firebase:firebase-admin:9.2.0")
+    implementation("com.google.firebase:firebase-admin:9.10.0")
+    include("com.google.firebase:firebase-admin:9.10.0")
 }
 
 test {
