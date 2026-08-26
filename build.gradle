@@ -12,7 +12,6 @@ base {
 }
 
 loom {
-	silentMojangWarning = true
 	runs {
 		client {
 			client()
