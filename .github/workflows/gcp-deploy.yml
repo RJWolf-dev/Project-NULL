@@ -22,6 +22,21 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Gradle with cache
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+          gradle-home-cache-cleanup: true
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test --no-daemon
+
       # Step 2: Authenticate to Google Cloud via Workload Identity Federation
       - name: Authenticate to Google Cloud
         id: auth
