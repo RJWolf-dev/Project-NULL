@@ -1,35 +1,54 @@
-name: Deploy to Google Cloud
+name: Deploy to GCP & Access Firestore
 
 on:
   push:
     branches:
-      - main  # Or whichever branch you want to trigger the workflow on
+      - main
+  pull_request:
+    branches:
+      - main
 
-# Required permissions for Workload Identity Federation
+# Required for Workload Identity Federation (OIDC) token exchange
 permissions:
-  contents: 'read'
-  id-token: 'write'
+  id-token: write
+  contents: read
 
 jobs:
-  deploy:
+  firestore-job:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v7
+      # Step 1: Checkout the codebase
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    # Authenticate with Google Cloud using Workload Identity Federation
-    - name: Google Auth
-      id: auth
-      uses: google-github-actions/auth@v3
-      with:
-        workload_identity_provider: 'projects/952718172772/locations/global/workloadIdentityPools/workload-identify-pool/providers/github'
-        service_account: 'github@project-16634.iam.gserviceaccount.com'
+      # Step 2: Authenticate to Google Cloud via Workload Identity Federation
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/952718172772/locations/global/workloadIdentityPools/project-null/providers/github'
+          service_account: 'github@project-16634.iam.gserviceaccount.com'
 
-    # Example Step: Verify authentication by running a gcloud command
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v3
+      # Step 3: Set up Google Cloud SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
 
-    - name: Test gcloud Command
-      run: |
-        gcloud auth list
-        gcloud projects list
+      # Step 4: Verify authentication context
+      - name: Verify Authentication
+        run: |
+          gcloud auth list
+          gcloud config get-value project
+
+      # Step 5: (Optional) Set up Node.js for application script interacting with Firestore
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Step 6: Example step running your script/tests that interact with Firestore
+      # Google SDK automatically detects Application Default Credentials exported by auth step
+      - name: Install dependencies & run app
+        run: |
+          npm ci || true
+          # node index.js
