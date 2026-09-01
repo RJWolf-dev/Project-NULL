@@ -30,6 +30,10 @@ repositories {
 	maven { url = "https://maven.google.com/" } // Google's Maven repository
 }
 
+java {
+	withSourcesJar()
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:1.20.1"
 	mappings "net.fabricmc:yarn:1.20.1+build.8:v2"

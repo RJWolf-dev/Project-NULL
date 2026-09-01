@@ -33,3 +33,6 @@ out/
 # Environment
 .env
 .env.local
+
+# Logs
+logs/
