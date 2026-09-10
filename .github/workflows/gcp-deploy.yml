@@ -29,10 +29,10 @@ jobs:
           java-version: '17'
 
       - name: Setup Gradle with cache
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
         with:
           cache-read-only: false
-          gradle-home-cache-cleanup: true
+          gradle-home-cache-cleanup: false
 
       - name: Build with Gradle
         run: ./gradlew build -x test --no-daemon
